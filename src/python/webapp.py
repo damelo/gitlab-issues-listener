@@ -1,5 +1,5 @@
 import logging
-import json
+import io, json
 import structlog
 from flask import Flask
 from flask import Response
@@ -18,8 +18,12 @@ def index():
 @APP.route('/', methods=['GET', 'POST'])
 def putIssue():
     if request.method == 'POST':
-        logging.warning('Método Post: %s' % request.method )
+        logging.warning('Metodo Post: %s' % request.method )
         json_dict = request.get_json()
-        logging.warning(json_dict)
+        
+        with io.open('data.json', 'w', encoding='utf-8') as f:
+            f.write(json.dumps(json_dict, ensure_ascii=False))
+        logging.warning("Recebi o Post")
     else:
-        logging.warning('Método: %s ' % request.method )
+        logging.warning('Metodo: %s ' % request.method )
+    return 'Yeah'
